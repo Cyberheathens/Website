@@ -1,54 +1,132 @@
-import { motion } from "motion/react";
-import { Calendar, Code, Mic, Rocket, Users } from "lucide-react";
-import { SectionHeader } from "./SectionHeader";
+import { useRef } from "react";
+import { ArrowUpRight } from "lucide-react";
+import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
 
 const events = [
-  { icon: Rocket, date: "MAR 15", title: "Hack The Hills 2026", tag: "Hackathon", desc: "48-hour campus hackathon with ₹2L in prizes and industry mentors." },
-  { icon: Code, date: "MAR 02", title: "ICPC Regional Bootcamp", tag: "CP", desc: "Two weeks of targeted training for the regional rounds." },
-  { icon: Mic, date: "FEB 21", title: "Fireside w/ a Vercel Engineer", tag: "Speaker", desc: "Inside the edge runtime, from monorepo to deploy." },
-  { icon: Users, date: "FEB 10", title: "Open Source Sprint", tag: "OSS", desc: "Weekend sprint to ship PRs to projects we use daily." },
-  { icon: Calendar, date: "JAN 28", title: "AI Reading Group · v3", tag: "AI/ML", desc: "Diffusion, mixture-of-experts, and post-training tricks." },
+  {
+    date: "AUG",
+    year: "2026",
+    title: "ICPC Orientation",
+    tag: "CP",
+    desc: "How ICPC works: rules, contest formats, team roles, and how Cyberheathens trains you for the regionals.",
+  },
+  {
+    date: "AUG",
+    year: "2026",
+    title: "Freshers Orientation",
+    tag: "Freshers",
+    desc: "Welcome, freshers! Meet the club, explore every track, and find your starting point. No prerequisites, only curiosity.",
+  },
+  {
+    date: "SEP",
+    year: "2026",
+    title: "Open Source Bootcamp",
+    tag: "OSS",
+    desc: "A hands-on bootcamp: Git and GitHub flow, finding good first issues, and shipping your first merged PR.",
+  },
+  {
+    date: "TBA",
+    year: "2026",
+    title: "Codeforces Hackathon",
+    tag: "CP",
+    desc: "A contest sprint on Codeforces: rating battles, team upsolving, and prizes to keep you sharp.",
+  },
 ];
 
 export function Events() {
-  return (
-    <section id="events" className="relative py-24 md:py-32">
-      <div className="mx-auto max-w-6xl px-6">
-        <SectionHeader
-          eyebrow="events"
-          title={<>A timeline of <span className="text-gradient">shipping.</span></>}
-          desc="Hackathons, contests, workshops, and speaker sessions across the year."
-        />
+  const rootRef = useRef<HTMLElement>(null);
 
-        <div className="relative mt-16">
-          <div className="absolute left-6 top-0 bottom-0 w-px bg-border md:left-1/2" />
-          <ul className="space-y-10">
-            {events.map((e, i) => (
-              <motion.li
-                key={e.title}
-                initial={{ opacity: 0, x: i % 2 ? 30 : -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.5 }}
-                className={`relative flex md:items-center ${i % 2 ? "md:flex-row-reverse" : ""}`}
-              >
-                <div className="hidden md:block md:w-1/2" />
-                <span className="absolute left-6 grid h-3 w-3 -translate-x-1/2 place-items-center rounded-full bg-neon-cyan shadow-[0_0_16px_var(--neon-cyan)] md:left-1/2" />
-                <div className={`ml-14 w-full md:ml-0 md:w-1/2 ${i % 2 ? "md:pr-12" : "md:pl-12"}`}>
-                  <div className="group rounded-xl brutal-border bg-bg-elevated/60 p-5 transition hover:border-neon-cyan/40 hover:shadow-[var(--shadow-neon)]">
-                    <div className="flex items-center gap-3">
-                      <div className="grid h-9 w-9 place-items-center rounded-md brutal-border bg-background/60">
-                        <e.icon className="h-4 w-4 text-neon-cyan" />
-                      </div>
-                      <div>
-                        <div className="font-mono text-xs text-text-secondary">{e.date} · {e.tag}</div>
-                        <h3 className="font-display text-lg font-semibold">{e.title}</h3>
-                      </div>
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
+
+      gsap.fromTo(
+        "[data-rail-fill]",
+        { scaleY: 0 },
+        {
+          scaleY: 1,
+          ease: "none",
+          transformOrigin: "top",
+          scrollTrigger: {
+            trigger: "[data-timeline]",
+            start: "top 70%",
+            end: "bottom 60%",
+            scrub: 0.6,
+          },
+        },
+      );
+
+      gsap.fromTo(
+        "[data-event]",
+        { opacity: 0, y: 44 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power4.out",
+          stagger: 0.12,
+          scrollTrigger: { trigger: "[data-timeline]", start: "top 75%" },
+        },
+      );
+
+      gsap.utils.toArray<HTMLElement>("[data-dot]").forEach((dot) => {
+        gsap.fromTo(
+          dot,
+          { scale: 0 },
+          {
+            scale: 1,
+            duration: 0.5,
+            ease: "back.out(3)",
+            scrollTrigger: { trigger: dot, start: "top 78%" },
+          },
+        );
+      });
+    },
+    { scope: rootRef },
+  );
+
+  return (
+    <section ref={rootRef} id="events" className="relative py-28 md:py-36">
+      <div className="mx-auto max-w-5xl px-6">
+        <p className="chip">Events</p>
+        <h2 className="font-display mt-6 max-w-2xl text-[clamp(2.25rem,5vw,4rem)] font-semibold leading-[1.02] tracking-[-0.02em]">
+          A timeline of <span className="text-ramp-y">shipping.</span>
+        </h2>
+
+        <div data-timeline className="relative mt-16 pl-10 md:pl-16">
+          <div className="absolute bottom-0 left-[7px] top-0 w-px bg-white/10 md:left-[15px]" />
+          <div
+            data-rail-fill
+            className="absolute bottom-0 left-[7px] top-0 w-px bg-ramp-y md:left-[15px]"
+          />
+
+          <ul className="space-y-8">
+            {events.map((e) => (
+              <li key={e.title} data-event data-cursor className="group relative">
+                <span
+                  data-dot
+                  className="absolute -left-10 top-7 h-[15px] w-[15px] rounded-full border-2 border-background bg-coral shadow-[0_0_18px_rgb(243_88_108/0.7)] transition-colors duration-300 group-hover:bg-flame md:-left-16"
+                />
+                <div className="panel rounded-2xl p-6">
+                  <div className="flex flex-wrap items-baseline justify-between gap-3">
+                    <div className="flex items-baseline gap-3">
+                      <h3 className="font-display text-xl font-semibold tracking-tight md:text-2xl">
+                        {e.title}
+                      </h3>
+                      <span className="chip !border-magenta/30 !text-magenta">{e.tag}</span>
                     </div>
-                    <p className="mt-3 text-sm text-text-secondary">{e.desc}</p>
+                    <time className="font-mono text-xs uppercase tracking-[0.2em] text-text-secondary">
+                      {e.date} · {e.year}
+                    </time>
                   </div>
+                  <p className="mt-3 max-w-xl text-sm leading-relaxed text-text-secondary">
+                    {e.desc}
+                  </p>
+                  <span className="mt-4 inline-flex items-center gap-1 font-mono text-xs text-flame opacity-0 transition-all duration-300 group-hover:opacity-100">
+                    RSVP soon <ArrowUpRight className="h-3 w-3" />
+                  </span>
                 </div>
-              </motion.li>
+              </li>
             ))}
           </ul>
         </div>

@@ -72,19 +72,44 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "IISER Bhopal Coding Club — Build. Break. Learn. Repeat." },
-      { name: "description", content: "Elite student developer community at IISER Bhopal — competitive programming, AI/ML, open source, hackathons, and research engineering." },
-      { name: "author", content: "IISERB Coding Club" },
-      { property: "og:title", content: "IISER Bhopal Coding Club" },
-      { property: "og:description", content: "Empowering the next generation of IISERB developers." },
+      { title: "Cyberheathens: Build. Break. Learn. Repeat." },
+      {
+        name: "description",
+        content:
+          "Cyberheathens is a student-led developer community focused on competitive programming, AI/ML, open source, hackathons, and research engineering.",
+      },
+      { name: "author", content: "Cyberheathens" },
+      { name: "theme-color", content: "#0a0710" },
+      { property: "og:title", content: "Cyberheathens" },
+      {
+        property: "og:description",
+        content: "A student-led developer community for builders and researchers at IISER Bhopal.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:site", content: "@cyberheathens" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
+      },
+      {
+        rel: "icon",
+        type: "image/svg+xml",
+        href: "/logo/logo.svg",
+      },
+      { rel: "preconnect", href: "https://api.fontshare.com" },
+      { rel: "preconnect", href: "https://cdn.fontshare.com", crossOrigin: "anonymous" },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=satoshi@400,500,700&display=swap",
+      },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap",
       },
     ],
   }),
